@@ -5,6 +5,7 @@
 */
 include('../settings/database.php');
 
+// Get data from users table
 $sql = "
     select 
         id,
@@ -62,13 +63,16 @@ $res = pg_query($local_conn, $sql);
                     <td><?= $row['mobile_phone'] ?></td>
                     <td><?= $row['status'] ?></td>
                     <td>
+                        <!-- Botón Editar -->
                         <a href="edit_user.php?id=<?= $row['id'] ?>" title="Edit user" class="text-decoration-none me-2">
                             <img src="icons/edit.png" alt="Edit user" width="20">
                         </a>
+                        <!-- Botón Buscar/Ver -->
                         <a href="#" title="Search user" class="text-decoration-none me-2">
                             <img src="icons/search.png" alt="Search user" width="20">
                         </a>
-                        <a href="#" title="Delete user" class="text-decoration-none">
+                        <!-- Botón Borrar (conectado a delete_user.php con confirmación) -->
+                        <a href="delete_user.php?userID=<?= $row['id'] ?>" title="Delete user" class="text-decoration-none" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
                             <img src="icons/delete.png" alt="Delete user" width="20">
                         </a>
                     </td>
