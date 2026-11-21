@@ -3,15 +3,17 @@
 include('../settings/database.php');
 
 session_start();
-if (!isset($_SESSION['user_id'])){
-    header('refresh:0;url=signin.html');
-}else{
-    header('refresh:0;url=home.php');
-}
 
 //Get payload from frontend
 $email = $_POST['email'];
-$passwd = MD5($_POST['pswd']); 
+//$passwd = MD5($_POST['pswd']);
+
+$sql_get_password = "SELECT password FROM users WHERE email = '$email' ";
+$res = pg_query($local_conn, $sql_get_password); // CAMBIO 1: el ";" era una "," 
+$row = pg_fetch_assoc($res);
+$passwd_db = $row['password'] ?? ''; // CAMBIO 2: evita el warning si el email no existe
+
+$passwd = password_verify($_POST['pswd'], $passwd_db); 
 
 $sql_check_email = "
     SELECT
@@ -23,14 +25,13 @@ $sql_check_email = "
     FROM    
         users 
     WHERE 
-        email = '$email' and
-        password = '$passwd'
-";
+        email = '$email'
+"; // CAMBIO 3: se quitó "and password = '$passwd'"
 $res = pg_query($local_conn, $sql_check_email);
 $total = pg_num_rows($res);
 $row = pg_fetch_assoc($res);
     
-if($total > 0 ){
+if($total > 0 && $passwd){ // CAMBIO 4: ahora también se valida la contraseña
     $_SESSION ['user_id'] = $row ['id'];
     $_SESSION ['user_firstname'] = $row ['firstname'];
     $_SESSION ['user_lastname'] = $row ['lastname'];

@@ -8,7 +8,8 @@
     $ident_number = $_POST['idnumber'];
     $mobile_phone = $_POST['mphone'];
     $email = $_POST['email'];
-    $passwd = MD5($_POST['pswd']); 
+    //$passwd = MD5($_POST['pswd']); 
+    $passwd = password_hash($_POST['pswd'], PASSWORD_DEFAULT);
     $PHOTO_URL = 'photos/photo_default.png';
 
     $sql_check_email ="SELECT * FROM users WHERE email ='$email'";
