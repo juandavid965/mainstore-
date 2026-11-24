@@ -30,56 +30,77 @@ $res = pg_query($local_conn, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Store - List users</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" type="image/png" href="icons/main_store_icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div class="container mt-4">
-        <h2 class="mb-3">Users List</h2>
-        <table class="table table-bordered table-striped align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>Photo</th>
-                    <th>Fullname</th>
-                    <th>Email</th>
-                    <th>Mobile phone</th>
-                    <th>Status</th>
-                    <th>Options</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = pg_fetch_assoc($res)) { ?>
-                <tr>
-                    <td>
-                        <?php 
-                            // Valida si la ruta existe en la BD y el archivo físico existe, de lo contrario usa photo_default.png
-                            $foto = (!empty($row['url_photo']) && file_exists($row['url_photo'])) ? $row['url_photo'] : 'photos/photo_default.png';
-                        ?>
-                        <img src="<?= $foto ?>" width="45" height="45" class="rounded-circle object-fit-cover" alt="User photo profile">
-                    </td>
-                    <td><?= $row['fullname'] ?></td>
-                    <td><?= $row['email'] ?></td>
-                    <td><?= $row['mobile_phone'] ?></td>
-                    <td><?= $row['status'] ?></td>
-                    <td>
-                        <!-- Botón Editar -->
-                        <a href="edit_user.php?id=<?= $row['id'] ?>" title="Edit user" class="text-decoration-none me-2">
-                            <img src="icons/edit.png" alt="Edit user" width="20">
-                        </a>
-                        <!-- Botón Buscar/Ver -->
-                        <a href="#" title="Search user" class="text-decoration-none me-2">
-                            <img src="icons/search.png" alt="Search user" width="20">
-                        </a>
-                        <!-- Botón Borrar (conectado a delete_user.php con confirmación) -->
-                        <a href="delete_user.php?userID=<?= $row['id'] ?>" title="Delete user" class="text-decoration-none" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
-                            <img src="icons/delete.png" alt="Delete user" width="20">
-                        </a>
-                    </td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
+    <div class="awning" aria-hidden="true"></div>
+    <main class="page">
+        <header class="topbar">
+            <a class="brand" href="home.php">Main Store</a>
+            <nav>
+                <a href="home.php">Home</a>
+                <a href="list_users.php" aria-current="page">Users</a>
+                <a href="logout.php">Logout</a>
+            </nav>
+        </header>
+
+        <h1>Users</h1>
+        <p class="lead">Review, edit or remove the people registered in the store.</p>
+
+        <div class="table-wrap">
+            <table class="users">
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Full name</th>
+                        <th>Email</th>
+                        <th>Mobile phone</th>
+                        <th>Status</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = pg_fetch_assoc($res)) { ?>
+                    <tr>
+                        <td>
+                            <?php 
+                                // Valida si la ruta existe en la BD y el archivo físico existe, de lo contrario usa photo_default.png
+                                $foto = (!empty($row['url_photo']) && file_exists($row['url_photo'])) ? $row['url_photo'] : 'photos/photo_default.png';
+                            ?>
+                            <img src="<?= htmlspecialchars($foto) ?>" class="avatar" alt="User photo profile">
+                        </td>
+                        <td><?= htmlspecialchars($row['fullname']) ?></td>
+                        <td><?= htmlspecialchars($row['email']) ?></td>
+                        <td><?= htmlspecialchars($row['mobile_phone']) ?></td>
+                        <td>
+                            <span class="badge <?= $row['status'] === 'Active' ? 'badge-active' : 'badge-inactive' ?>"><?= $row['status'] ?></span>
+                        </td>
+                        <td>
+                            <div class="options">
+                                <!-- Botón Editar -->
+                                <a href="edit_user.php?id=<?= $row['id'] ?>" title="Edit user" class="icon-btn">
+                                    <img src="icons/edit.png" alt="Edit user">
+                                </a>
+                                <!-- Botón Buscar/Ver -->
+                                <a href="#" title="Search user" class="icon-btn">
+                                    <img src="icons/search.png" alt="Search user">
+                                </a>
+                                <!-- Botón Borrar (conectado a delete_user.php con confirmación) -->
+                                <a href="delete_user.php?userID=<?= $row['id'] ?>" title="Delete user" class="icon-btn danger" onclick="return confirm('Are you sure you want to delete this user?');">
+                                    <img src="icons/delete.png" alt="Delete user">
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+    </main>
 </body>
 </html>

@@ -1,29 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Main Store-Register user</title>
-        <link rel="icon" type="image/png" href="icons/main_store_icon.png">
-    </head>
-    <body>
-        <h3>Register user form</h3>
-        <form name="register-form" action="signup.php" method="post">
-            <label>Firstname:</label><br>
-            <input type="text" name="fname" required><br><br>
-            <label>Lastname:</label><br>
-            <input type="text" name="lname" required><br><br> 
-            <label>Identification number:</label><br>
-            <input type="text" name="idnumber" required><br><br> 
-            <label>Mobile phone:</label><br>
-            <input type="text" name="mphone" required><br><br>
-            <label>E-mail:</label><br>
-            <input type="email" name="email" placeholder="example@correo.com" required><br><br> 
-            <label>Password:</label><br>
-            <input type="password" name="pswd" required><br><br>  
-            <button>Register</button>
-        </form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Store-Register user</title>
+    <link rel="icon" type="image/png" href="icons/main_store_icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="awning" aria-hidden="true"></div>
+    <main>
+        <div class="card wide">
+            <a class="brand" href="../index.html">Main Store</a>
+            <h1>Create your account</h1>
+            <p class="lead">Fill in your details to register.</p>
 
-    
-    </body>
+            <form name="register-form" action="signup.php" method="post">
+                <div class="row">
+                    <div class="field">
+                        <label for="fname">First name</label>
+                        <input type="text" id="fname" name="fname" autocomplete="given-name" required>
+                    </div>
+                    <div class="field">
+                        <label for="lname">Last name</label>
+                        <input type="text" id="lname" name="lname" autocomplete="family-name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="field">
+                        <label for="idnumber">Identification number</label>
+                        <input type="text" id="idnumber" name="idnumber" inputmode="numeric" required>
+                    </div>
+                    <div class="field">
+                        <label for="mphone">Mobile phone</label>
+                        <input type="tel" id="mphone" name="mphone" autocomplete="tel" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="example@correo.com" autocomplete="email" required>
+                </div>
+                <div class="field">
+                    <label for="pswd">Password</label>
+                    <input type="password" id="pswd" name="pswd" autocomplete="new-password" required>
+                </div>
+                <button class="btn btn-primary btn-block">Create account</button>
+            </form>
+
+            <p class="switch">Already registered? <a href="signin.html">Sign in</a></p>
+        </div>
+    </main>
+</body>
 </html>
